@@ -371,23 +371,117 @@ Pre-built binaries are not available for macOS. macOS users with access to the s
 ## Prerequisites
 
 - Node.js 18+ (`brew install node@18`)
-- PostgreSQL 16 with pgvector (`brew install postgresql@16 pgvector`)
+- PostgreSQL 16 with pgvector extension
 
-## Quick Start
+## Installation Options
+
+You can run PostgreSQL either natively via Homebrew or in Docker. Choose one:
+
+### Option 1: Homebrew (Native Installation)
+
+```bash
+# Install PostgreSQL with pgvector
+brew install postgresql@16 pgvector
+
+# Start PostgreSQL service
+brew services start postgresql@16
+
+# Create database and enable pgvector
+psql postgres
+CREATE DATABASE niimi_db;
+\c niimi_db
+CREATE EXTENSION vector;
+\q
+```
+
+### Option 2: Docker (Recommended)
+
+```bash
+# Start PostgreSQL with pgvector in Docker
+docker run -d \
+  --name niimi-postgres \
+  -e POSTGRES_USER=niimi_user \
+  -e POSTGRES_PASSWORD=niimi_password \
+  -e POSTGRES_DB=niimi_db \
+  -p 5432:5432 \
+  -v niimi-pgdata:/var/lib/postgresql/data \
+  ankane/pgvector
+
+# Enable pgvector extension
+docker exec niimi-postgres psql -U niimi_user -d niimi_db -c "CREATE EXTENSION vector;"
+```
+
+## Setup Steps
 
 ```bash
 cd niimi
-make help      # View available commands
-make setup     # Install dependencies
-make setup-db  # Initialize database
-make run       # Start Niimi
+
+# 1. Install dependencies and verify environment
+make setup
+
+# 2. Copy and configure environment file
+cp .env.example .env
+nano .env  # Add your API keys (see below)
+
+# 3. Initialize database schema
+# IMPORTANT: Only run after creating database and enabling pgvector extension above
+make setup-db
+
+# 4. Start Niimi
+make run
 ```
+
+## Configure API Keys
+
+Edit `.env` with your settings:
+
+```bash
+# Required API Keys
+ANTHROPIC_API_KEY=sk-ant-your-key-here
+OPENAI_API_KEY=sk-your-openai-key-here
+
+# Optional: For video chat with voice (uncomment to enable)
+# HUME_API_KEY=your-hume-api-key
+# HUME_SECRET_KEY=your-hume-secret-key
+
+# PostgreSQL Configuration
+# For Docker:
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=niimi_db
+POSTGRES_USER=niimi_user
+POSTGRES_PASSWORD=niimi_password
+
+# For Homebrew (use your local postgres user):
+# POSTGRES_HOST=localhost
+# POSTGRES_PORT=5432
+# POSTGRES_DB=niimi_db
+# POSTGRES_USER=your_username
+# POSTGRES_PASSWORD=
+```
+
+Get your API keys:
+
+| Provider  | Purpose                     | URL                                    |
+| --------- | --------------------------- | -------------------------------------- |
+| Anthropic | Claude LLM and Vision       | https://console.anthropic.com/         |
+| OpenAI    | Embeddings for RAG search   | https://platform.openai.com/api-keys   |
+| Hume AI   | Video chat voice (optional) | https://platform.hume.ai/settings/keys |
+
+## Access Niimi
 
 Open your browser and navigate to: **http://localhost:5443/video-chat.html**
 
 To use a different port, add `VIDEO_PORT=8080` to your .env file.
 
-See the Makefile for detailed build and setup commands.
+## Other Makefile Commands
+
+```bash
+make help      # View all available commands
+make build     # Compile TypeScript
+make clean     # Remove build artifacts
+make verify    # Verify environment setup
+```
 
 ---
 
