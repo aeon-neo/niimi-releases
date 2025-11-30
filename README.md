@@ -51,6 +51,26 @@ This guide is for users installing Niimi from pre-built binaries.
 
 # Linux Installation
 
+This guide is for users installing Niimi from pre-built binaries.
+
+## System Requirements
+
+- **Linux**: Ubuntu 20.04+ or similar (x64)
+- **Windows**: Windows 10/11 with Ubuntu via Windows Terminal (x64)
+- **macOS**: No pre-built binaries available (see "macOS Installation" section for source build)
+- **Memory**: 4GB RAM minimum
+- **Disk Space**: 2GB free space
+
+## Choose Your Installation Path
+
+- **Linux Users**: Follow "Linux Installation" section below
+- **Windows Users**: Follow "Windows Installation" section below
+- **macOS Users**: Follow "macOS Installation" section below (requires building from source)
+
+---
+
+# Linux Installation
+
 Complete installation guide for native Linux (Ubuntu).
 
 ## 1. Download Niimi
@@ -63,13 +83,29 @@ sudo apt install git
 # Clone the releases repository
 git clone https://github.com/aeon-neo/niimi-releases.git
 cd niimi-releases
+```
 
-# Extract the binary
+## 2. Verify Download (Recommended)
+
+Before extracting, verify the file integrity using the SHA256 checksum:
+
+```bash
+# Verify the download wasn't corrupted or tampered with
+sha256sum -c niimi-3.0.0-linux.tar.gz.sha256
+
+# Expected output: "niimi-3.0.0-linux.tar.gz: OK"
+```
+
+If verification fails, do not proceed - re-download the file.
+
+## 3. Extract Binary
+
+```bash
 tar -xzf niimi-3.0.0-linux.tar.gz
 cd niimi-3.0.0-linux
 ```
 
-## 2. Install Dependencies
+## 4. Install Dependencies
 
 ```bash
 # Install PostgreSQL and ffmpeg
