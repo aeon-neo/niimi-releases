@@ -577,6 +577,29 @@ mkdir -p ~/niimi-documents
 
 ## 8. Run Niimi
 
+### For Non-Technical Users (Recommended)
+
+Once you've completed steps 1-7 above (one-time setup), running Niimi is simple:
+
+1. Open Finder
+2. Press **Cmd+Shift+G** and type: `/Users/YOUR_USERNAME/niimi-releases/niimi-3.0.0-macos`
+   (Replace YOUR_USERNAME with your actual macOS username)
+3. **Double-click the "Niimi" application** (the one that looks like an app, not the terminal executable)
+4. Your browser will automatically open to http://localhost:5443/video-chat.html
+
+That's it! No terminal needed.
+
+**To stop Niimi:**
+- Open **Activity Monitor** (search in Spotlight with Cmd+Space)
+- Find the **niimi** process
+- Click **Quit Process**
+
+Or in terminal: `kill $(cat /tmp/niimi.pid)`
+
+**Optional:** You can drag Niimi.app to your Dock or Desktop for even easier access, but keep it in the same folder as the .env file.
+
+### For Technical Users (Terminal Method)
+
 ```bash
 chmod +x niimi
 ./niimi
