@@ -33,31 +33,33 @@ Niimi is currently in **private beta**. To join the waitlist for public access, 
 
 This guide is for users installing Niimi from pre-built binaries.
 
-## System Requirements
+## Quick Start (Already Installed)
 
-- **Linux**: Ubuntu 20.04+ or similar (x64)
-- **Windows**: Windows 10/11 with Ubuntu via Windows Terminal (x64)
-- **macOS**: No pre-built binaries available (see "macOS Installation" section for source build)
-- **Memory**: 4GB RAM minimum
-- **Disk Space**: 2GB free space
+If you've already installed Niimi and just want to start it:
 
-## Choose Your Installation Path
+**Linux and Windows (Ubuntu via Windows Terminal):**
+```bash
+cd ~/niimi-releases/niimi-3.0.0-linux
+./niimi
+```
 
-- **Linux Users**: Follow "Linux Installation" section below
-- **Windows Users**: Follow "Windows Installation" section below
-- **macOS Users**: Follow "macOS Installation" section below (requires building from source)
+**macOS:**
+```bash
+cd ~/niimi-releases/niimi-3.0.0-macos
+./niimi
+```
+
+Open your browser to: **http://localhost:5443/video-chat.html**
+
+Press Ctrl+C in the terminal to stop the server.
 
 ---
 
-# Linux Installation
-
-This guide is for users installing Niimi from pre-built binaries.
-
 ## System Requirements
 
 - **Linux**: Ubuntu 20.04+ or similar (x64)
 - **Windows**: Windows 10/11 with Ubuntu via Windows Terminal (x64)
-- **macOS**: No pre-built binaries available (see "macOS Installation" section for source build)
+- **macOS**: macOS 11+ (Big Sur or later) - x64 and ARM64 binaries available
 - **Memory**: 4GB RAM minimum
 - **Disk Space**: 2GB free space
 
@@ -65,7 +67,7 @@ This guide is for users installing Niimi from pre-built binaries.
 
 - **Linux Users**: Follow "Linux Installation" section below
 - **Windows Users**: Follow "Windows Installation" section below
-- **macOS Users**: Follow "macOS Installation" section below (requires building from source)
+- **macOS Users**: Follow "macOS Installation" section below
 
 ---
 
@@ -120,7 +122,7 @@ sudo systemctl start postgresql
 sudo systemctl enable postgresql
 ```
 
-## 3. Create Database
+## 5. Create Database
 
 ```bash
 # Connect to PostgreSQL as superuser
@@ -140,7 +142,7 @@ GRANT ALL ON SCHEMA public TO niimi_user;
 
 **Important:** The `CREATE EXTENSION vector` command must be run as the postgres superuser before the install script will work.
 
-## 4. Run Database Setup Script
+## 6. Run Database Setup Script
 
 ```bash
 psql -h localhost -U niimi_user -d niimi_db -f database/install.sql
@@ -148,7 +150,7 @@ psql -h localhost -U niimi_user -d niimi_db -f database/install.sql
 
 Enter your password when prompted. This creates 22 tables required by Niimi.
 
-## 5. Configure Niimi
+## 7. Configure Niimi
 
 Create `.env` file from the example:
 
@@ -184,13 +186,13 @@ POSTGRES_PASSWORD=your_secure_password
 | OpenAI    | Embeddings for RAG search   | https://platform.openai.com/api-keys   |
 | Hume AI   | Video chat voice (optional) | https://platform.hume.ai/settings/keys |
 
-## 6. Create Documents Directory
+## 8. Create Documents Directory
 
 ```bash
 mkdir -p ~/niimi-documents
 ```
 
-## 7. Run Niimi
+## 9. Run Niimi
 
 ```bash
 chmod +x niimi
@@ -267,13 +269,29 @@ Open Windows Terminal (which now opens Ubuntu). Run:
 # Clone the releases repository
 git clone https://github.com/aeon-neo/niimi-releases.git
 cd niimi-releases
+```
 
-# Extract the binary
+## 5. Verify Download (Recommended)
+
+Before extracting, verify the file integrity using the SHA256 checksum:
+
+```bash
+# Verify the download wasn't corrupted or tampered with
+sha256sum -c niimi-3.0.0-linux.tar.gz.sha256
+
+# Expected output: "niimi-3.0.0-linux.tar.gz: OK"
+```
+
+If verification fails, do not proceed - re-download the file.
+
+## 6. Extract Binary
+
+```bash
 tar -xzf niimi-3.0.0-linux.tar.gz
 cd niimi-3.0.0-linux
 ```
 
-## 5. Install Dependencies
+## 7. Install Dependencies
 
 ```bash
 # Install PostgreSQL and ffmpeg
@@ -310,7 +328,7 @@ command="service postgresql start"
 
 Save (Ctrl+X, Y, Enter). Then restart: close all Windows Terminal windows, open PowerShell, run `wsl --shutdown`, then reopen Windows Terminal.
 
-## 6. Create Database
+## 8. Create Database
 
 ```bash
 # Connect to PostgreSQL as superuser
@@ -330,7 +348,7 @@ GRANT ALL ON SCHEMA public TO niimi_user;
 
 **Important:** The `CREATE EXTENSION vector` command must be run as the postgres superuser before the install script will work.
 
-## 7. Run Database Setup Script
+## 9. Run Database Setup Script
 
 ```bash
 psql -U niimi_user -h localhost -d niimi_db -f database/install.sql
@@ -338,7 +356,7 @@ psql -U niimi_user -h localhost -d niimi_db -f database/install.sql
 
 Enter your password when prompted. This creates 22 tables required by Niimi.
 
-## 8. Configure Niimi
+## 10. Configure Niimi
 
 Create `.env` file from the example:
 
@@ -374,13 +392,13 @@ POSTGRES_PASSWORD=your_secure_password
 | OpenAI    | Embeddings for RAG search   | https://platform.openai.com/api-keys   |
 | Hume AI   | Video chat voice (optional) | https://platform.hume.ai/settings/keys |
 
-## 9. Create Documents Directory
+## 11. Create Documents Directory
 
 ```bash
 mkdir -p ~/niimi-documents
 ```
 
-## 10. Run Niimi
+## 12. Run Niimi
 
 ```bash
 chmod +x niimi
@@ -402,14 +420,58 @@ Press Ctrl+C in the terminal to stop the server.
 
 # macOS Installation
 
-macOS users can either use pre-built binaries (if available from your distributor) or build and run from source using the included Makefile.
+Complete installation guide for macOS (Intel and Apple Silicon).
 
-## Prerequisites
+## 1. Download Niimi
 
-- Node.js 18+ (`brew install node@18`)
-- PostgreSQL 16 with pgvector extension
+```bash
+# Install git if not already installed
+brew install git
 
-## Installation Options
+# Clone the releases repository
+git clone https://github.com/aeon-neo/niimi-releases.git
+cd niimi-releases
+```
+
+## 2. Verify Download (Recommended)
+
+Before extracting, verify the file integrity using the SHA256 checksum:
+
+**For Intel Macs (x64):**
+```bash
+# Verify the download wasn't corrupted or tampered with
+shasum -a 256 -c niimi-3.0.0-macos-x64.tar.gz.sha256
+
+# Expected output: "niimi-3.0.0-macos-x64.tar.gz: OK"
+```
+
+**For Apple Silicon Macs (ARM64):**
+```bash
+# Verify the download wasn't corrupted or tampered with
+shasum -a 256 -c niimi-3.0.0-macos-arm64.tar.gz.sha256
+
+# Expected output: "niimi-3.0.0-macos-arm64.tar.gz: OK"
+```
+
+If verification fails, do not proceed - re-download the file.
+
+**Note:** To check your Mac's architecture, run: `uname -m` (x86_64 = Intel, arm64 = Apple Silicon)
+
+## 3. Extract Binary
+
+**For Intel Macs (x64):**
+```bash
+tar -xzf niimi-3.0.0-macos-x64.tar.gz
+cd niimi-3.0.0-macos
+```
+
+**For Apple Silicon Macs (ARM64):**
+```bash
+tar -xzf niimi-3.0.0-macos-arm64.tar.gz
+cd niimi-3.0.0-macos
+```
+
+## 4. Install PostgreSQL
 
 You can run PostgreSQL either natively via Homebrew or in Docker. Choose one:
 
@@ -447,27 +509,30 @@ docker run -d \
 docker exec niimi-postgres psql -U niimi_user -d niimi_db -c "CREATE EXTENSION vector;"
 ```
 
-## Setup Steps
+**Important:** The `CREATE EXTENSION vector` command must be run before the install script will work.
 
+## 5. Run Database Setup Script
+
+**For Docker:**
 ```bash
-cd niimi
-
-# 1. Install dependencies and verify environment
-make setup
-
-# 2. Copy and configure environment file
-cp .env.example .env
-nano .env  # Add your API keys (see below)
-
-# 3. Initialize database schema
-# IMPORTANT: Only run after creating database and enabling pgvector extension above
-make setup-db
-
-# 4. Start Niimi
-make run
+psql -h localhost -U niimi_user -d niimi_db -f database/install.sql
 ```
 
-## Configure API Keys
+**For Homebrew (adjust username to your macOS username):**
+```bash
+psql -h localhost -U your_username -d niimi_db -f database/install.sql
+```
+
+Enter your password when prompted. This creates 22 tables required by Niimi.
+
+## 6. Configure Niimi
+
+Create `.env` file from the example:
+
+```bash
+cp .env.example .env
+nano .env  # or use your preferred editor
+```
 
 Edit `.env` with your settings:
 
@@ -496,7 +561,7 @@ POSTGRES_PASSWORD=niimi_password
 # POSTGRES_PASSWORD=
 ```
 
-Get your API keys:
+**Get your API keys:**
 
 | Provider  | Purpose                     | URL                                    |
 | --------- | --------------------------- | -------------------------------------- |
@@ -504,20 +569,29 @@ Get your API keys:
 | OpenAI    | Embeddings for RAG search   | https://platform.openai.com/api-keys   |
 | Hume AI   | Video chat voice (optional) | https://platform.hume.ai/settings/keys |
 
-## Access Niimi
+## 7. Create Documents Directory
+
+```bash
+mkdir -p ~/niimi-documents
+```
+
+## 8. Run Niimi
+
+```bash
+chmod +x niimi
+./niimi
+```
+
+On first run, Niimi will:
+
+1. Connect to PostgreSQL database
+2. Start the web server on port 5443 (configurable via `VIDEO_PORT` in .env)
 
 Open your browser and navigate to: **http://localhost:5443/video-chat.html**
 
 To use a different port, add `VIDEO_PORT=8080` to your .env file.
 
-## Other Makefile Commands
-
-```bash
-make help      # View all available commands
-make build     # Compile TypeScript
-make clean     # Remove build artifacts
-make verify    # Verify environment setup
-```
+Press Ctrl+C in the terminal to stop the server.
 
 ---
 
@@ -701,7 +775,7 @@ psql -h localhost -U niimi_user -d niimi_db -f database/install.sql
 
 # File Locations
 
-**Linux and Windows (Ubuntu via Windows Terminal):**
+**All Platforms:**
 
 - Binary: current directory (`./niimi`)
 - Configuration: `.env` in same directory as binary
@@ -713,6 +787,8 @@ psql -h localhost -U niimi_user -d niimi_db -f database/install.sql
 # Updating
 
 To update to a new version:
+
+**Linux and Windows (Ubuntu via Windows Terminal):**
 
 ```bash
 # Stop Niimi (Ctrl+C in the terminal running it)
@@ -737,6 +813,32 @@ cp ~/.env.niimi.backup .env
 ./niimi
 ```
 
+**macOS:**
+
+```bash
+# Stop Niimi (Ctrl+C in the terminal running it)
+
+# Backup your .env file
+cd ~/niimi-releases/niimi-3.0.0-macos
+cp .env ~/.env.niimi.backup
+
+# Pull latest release
+cd ~/niimi-releases
+git pull
+
+# Extract new version (choose your architecture)
+rm -rf niimi-3.0.0-macos
+# For Intel Macs: tar -xzf niimi-3.0.0-macos-x64.tar.gz
+# For Apple Silicon: tar -xzf niimi-3.0.0-macos-arm64.tar.gz
+cd niimi-3.0.0-macos
+
+# Restore your .env
+cp ~/.env.niimi.backup .env
+
+# Restart
+./niimi
+```
+
 Your database and documents are preserved between updates.
 
 ---
@@ -752,6 +854,26 @@ rm -rf ~/niimi-releases
 
 # Remove database (WARNING: deletes all data)
 sudo -u postgres psql -c "DROP DATABASE niimi_db;"
+
+# Remove documents
+rm -rf ~/niimi-documents/
+```
+
+**macOS:**
+
+```bash
+# Remove the niimi folder
+cd
+rm -rf ~/niimi-releases
+
+# Remove database (WARNING: deletes all data)
+# For Docker:
+docker stop niimi-postgres
+docker rm niimi-postgres
+docker volume rm niimi-pgdata
+
+# For Homebrew:
+psql postgres -c "DROP DATABASE niimi_db;"
 
 # Remove documents
 rm -rf ~/niimi-documents/
