@@ -838,29 +838,41 @@ cp ~/.env.niimi.backup .env
 
 **macOS:**
 
-```bash
-# Stop Niimi (Ctrl+C in the terminal running it)
+Open Terminal and run these commands:
 
-# Backup your .env file
+```bash
+# Step 1: Stop Niimi
+# If running via Niimi.app: Open Activity Monitor, find "niimi" process, click Quit Process
+# If running via terminal: Press Ctrl+C
+
+# Step 2: Backup your .env file
 cd ~/niimi-releases/niimi-3.0.0-macos
 cp .env ~/.env.niimi.backup
 
-# Pull latest release
+# Step 3: Download latest release
 cd ~/niimi-releases
 git pull
 
-# Extract new version (choose your architecture)
+# Step 4: Remove old version
 rm -rf niimi-3.0.0-macos
-# For Intel Macs: tar -xzf niimi-3.0.0-macos-x64.tar.gz
-# For Apple Silicon: tar -xzf niimi-3.0.0-macos-arm64.tar.gz
-cd niimi-3.0.0-macos
 
-# Restore your .env
+# Step 5: Extract new version
+# For Intel Macs (x64):
+tar -xzf niimi-3.0.0-macos-x64.tar.gz
+# For Apple Silicon (ARM64):
+# tar -xzf niimi-3.0.0-macos-arm64.tar.gz
+
+# Step 6: Restore your .env
+cd niimi-3.0.0-macos
 cp ~/.env.niimi.backup .env
 
-# Restart
-./niimi
+# Step 7: Open Finder to the folder
+open .
 ```
+
+**Step 8:** In the Finder window that opens, double-click **"Niimi"** (the application).
+
+Your browser will open automatically. Done!
 
 Your database and documents are preserved between updates.
 
