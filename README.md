@@ -366,7 +366,7 @@ Press Ctrl+C in the terminal to stop the server.
 
 # macOS Installation
 
-Pre-built binaries are not available for macOS. macOS users with access to the source code can build and run from source using the included Makefile.
+macOS users can either use pre-built binaries (if available from your distributor) or build and run from source using the included Makefile.
 
 ## Prerequisites
 
