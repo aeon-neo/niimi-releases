@@ -164,9 +164,11 @@ chmod +x niimi
 On first run, Niimi will:
 
 1. Connect to PostgreSQL database
-2. Start the web server on port 5443
+2. Start the web server on port 5443 (configurable via `VIDEO_PORT` in .env)
 
 Open your browser and navigate to: **http://localhost:5443/video-chat.html**
+
+To use a different port, add `VIDEO_PORT=8080` to your .env file.
 
 Press Ctrl+C in the terminal to stop the server.
 
@@ -352,9 +354,11 @@ chmod +x niimi
 On first run, Niimi will:
 
 1. Connect to PostgreSQL database
-2. Start the web server on port 5443
+2. Start the web server on port 5443 (configurable via `VIDEO_PORT` in .env)
 
 Open your browser (Chrome, Edge, Firefox) and navigate to: **http://localhost:5443/video-chat.html**
+
+To use a different port, add `VIDEO_PORT=8080` to your .env file.
 
 Press Ctrl+C in the terminal to stop the server.
 
@@ -381,6 +385,8 @@ make run       # Start Niimi
 
 Open your browser and navigate to: **http://localhost:5443/video-chat.html**
 
+To use a different port, add `VIDEO_PORT=8080` to your .env file.
+
 See the Makefile for detailed build and setup commands.
 
 ---
@@ -389,7 +395,7 @@ See the Makefile for detailed build and setup commands.
 
 ## Web Interface
 
-After starting Niimi, open your browser to **http://localhost:5443/video-chat.html**
+After starting Niimi, open your browser to **http://localhost:5443/video-chat.html** (or your custom VIDEO_PORT)
 
 The interface provides:
 
@@ -509,11 +515,12 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE niimi_db TO niimi_use
 If you see "Failed to start server. Is port 5443 in use?":
 
 ```bash
-# Find what's using the port
-lsof -i :5443
+# Option 1: Use a different port
+# Add to .env: VIDEO_PORT=8080
 
-# Kill the process (replace PID with the actual process ID)
-kill PID
+# Option 2: Find what's using the port and kill it
+lsof -i :5443
+kill PID  # Replace PID with the actual process ID
 ```
 
 ## API Key Errors
